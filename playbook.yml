@@ -1,6 +1,20 @@
 ---
 - hosts: all
+  user: ansible
   become: yes
+  connection: ssh
+
   tasks:
-    - name: installing java 
-      action: yum pkg=java state=present
+    - name: installing httpd 
+      action: yum pkg=httpd state=present
+    - name: restart httpd
+      service: name=httpd state=restarted
+    - name: create a file
+      file:
+        path: "/var/www/html/index.html"
+        state: touch
+    - name: enter data in a file
+      copy:
+        dest: "/var/www/html/index.html"
+        content: |
+          <h1>this is my webapplication, i have deplayed using ansible </h1>
